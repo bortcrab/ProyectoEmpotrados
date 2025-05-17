@@ -1,0 +1,10 @@
+server:
+  port: 9090
+
+spring:
+  application:
+    name: backend
+  data:
+    mongodb:
+      database: db_lecturas
+      uri: mongodb://localhost:27017/
