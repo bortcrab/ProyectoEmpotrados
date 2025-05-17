@@ -21,6 +21,7 @@ public class Lectura {
     private ObjectId _id;
     private String tipo;
     private float valor;
+    private Date fecha;
 
     public Lectura(String tipo, float valor) {
         this.tipo = tipo;

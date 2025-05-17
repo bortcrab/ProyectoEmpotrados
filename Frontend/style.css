@@ -1,0 +1,90 @@
+@import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&display=swap');
+
+* {
+    font-family: 'League Spartan';
+}
+
+body {
+    background-color: #1b3349;
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#lecturas {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    padding-bottom: 1rem;
+}
+
+#lecturas> :nth-child(odd) {
+    background-color: #36a2eb;
+}
+
+#lecturas> :nth-child(even) {
+    background-color: #4caf50;
+}
+
+.anomalia {
+    background-color: #f44336 !important;
+}
+
+.lectura {
+    padding: 5px;
+    border-radius: 10px;
+    padding: 1rem;
+    width: 250px;
+    font-size: 1.2rem;
+}
+
+#totalLecturas {
+    font-size: 1.7rem;
+}
+
+h2,
+#totalLecturas {
+    margin: 0;
+}
+
+h2 {
+    margin-top: 1rem;
+    font-size: 3rem;
+}
+
+#actualizarBtn {
+    padding: 10px 20px;
+    font-size: 16px;
+    margin: 1.5rem 0rem;
+    cursor: pointer;
+    border-style: none;
+    border-radius: 10px;
+    width: 200px;
+    font-size: 1.5rem;
+}
+
+.grafica-container {
+    background-color: rgb(255, 249, 237);
+    padding: 5rem;
+    width: 600px;
+    height: 300px;
+}
+
+#titulo {
+    color: wheat;
+    font-size: 4rem;
+    text-align: center;
+}
+
+.contenedor-lecturas {
+    background-color: wheat;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+}

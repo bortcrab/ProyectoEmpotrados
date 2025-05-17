@@ -5,48 +5,31 @@
     <meta charset="UTF-8">
     <title>Lecturas del Sensor</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-
-        #grafica-container {
-            max-width: 600px;
-            margin-bottom: 30px;
-        }
-
-        #lecturas {
-            margin-top: 20px;
-        }
-
-        .lectura {
-            padding: 5px;
-            border-bottom: 1px solid #ccc;
-        }
-
-        #actualizarBtn {
-            padding: 10px 20px;
-            font-size: 16px;
-            margin-bottom: 20px;
-            cursor: pointer;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <h1>Lecturas del Sensor</h1>
+    <h1 id="titulo">Lecturas del Sensor</h1>
 
-    <button id="actualizarBtn">Actualizar Lecturas</button>
 
-    <div id="grafica-container">
+    <div class="grafica-container">
         <canvas id="graficaPromedios"></canvas>
     </div>
+    <button id="actualizarBtn">Actualizar Lecturas</button>
 
-    <h2>Detalles de Lecturas</h2>
-    <div id="lecturas">Cargando lecturas...</div>
+    <div class="contenedor-lecturas">
+        <h2>Detalles de Lecturas</h2>
+        <p id="totalLecturas">Cantida de lecturas: 0</p>
+        <div id="lecturas">Cargando lecturas...</div>
+
+    </div>
 
     <script>
+        const TEMP_MIN = 18.0;
+        const TEMP_MAX = 28.0;
+        const HUM_MIN = 30.0;
+        const HUM_MAX = 70.0;
+
         let graficaActual = null;
 
         async function obtenerLecturas() {
@@ -101,6 +84,11 @@
                 },
                 options: {
                     responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
                     scales: {
                         y: {
                             beginAtZero: true,
@@ -116,19 +104,43 @@
 
         function mostrarLecturas(lecturas) {
             const contenedor = document.getElementById("lecturas");
+            const totalElement = document.getElementById("totalLecturas");
             contenedor.innerHTML = "";
 
+            const TEMP_MIN = 18.0;
+            const TEMP_MAX = 28.0;
+            const HUM_MIN = 30.0;
+            const HUM_MAX = 70.0;
+
             if (Array.isArray(lecturas) && lecturas.length > 0) {
+                totalElement.innerText = `Cantidad de lecturas: ${lecturas.length}`;
+
                 lecturas.forEach(lectura => {
                     const div = document.createElement("div");
                     div.className = "lectura";
-                    div.textContent = `Tipo: ${lectura.tipo} | Valor: ${lectura.valor}`;
+
+                    // Detectar si es una anomalía y añadir la clase correspondiente
+                    if (
+                        (lectura.tipo === "Temperatura" && (lectura.valor < TEMP_MIN || lectura.valor > TEMP_MAX)) ||
+                        (lectura.tipo === "Humedad" && (lectura.valor < HUM_MIN || lectura.valor > HUM_MAX))
+                    ) {
+                        div.classList.add("anomalia");
+                    }
+
+                    if (lectura.tipo === "Temperatura") {
+                        div.innerHTML = `Valor: ${parseFloat(lectura.valor).toFixed(2)}°C<br>Fecha: ${lectura.fecha}`;
+                    } else if (lectura.tipo === "Humedad") {
+                        div.innerHTML = `Valor: ${parseFloat(lectura.valor).toFixed(2)}%<br>Fecha: ${lectura.fecha}`;
+                    }
+
                     contenedor.appendChild(div);
                 });
             } else {
+                totalElement.innerText = "Total de lecturas: 0";
                 contenedor.innerText = "No hay lecturas disponibles.";
             }
         }
+
 
         // ✅ Cargar una vez al iniciar
         window.addEventListener("DOMContentLoaded", obtenerLecturas);

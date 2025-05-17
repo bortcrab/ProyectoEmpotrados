@@ -6,13 +6,16 @@ import org.itson.backend.repositories.ILecturasRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
 public class LecturasService {
     @Autowired
     private ILecturasRepository repository;
+    SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
 
     /**
      * Método para registrar una lectura.
@@ -23,6 +26,7 @@ public class LecturasService {
      */
     public LecturaDTO registrarLectura(LecturaDTO lecturaDTO) throws Exception {
         Lectura lectura = convertirLectura(lecturaDTO);
+        lectura.setFecha(new java.util.Date());
         repository.save(lectura);
         return lecturaDTO;
     }
@@ -55,8 +59,13 @@ public class LecturasService {
     private LecturaDTO convertirLecturaDTO(Lectura lectura) {
         return new LecturaDTO(
                 lectura.getTipo(),
-                lectura.getValor()
+                lectura.getValor(),
+                formatearFecha(lectura.getFecha())
         );
+    }
+
+    private String formatearFecha(Date fecha) {
+        return formato.format(fecha);
     }
 
     private Lectura convertirLectura(LecturaDTO lecturaDTO) {
